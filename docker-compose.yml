@@ -1,0 +1,25 @@
+services:
+  morocco-cpsv-portal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: morocco_cpsv_portal
+    restart: unless-stopped
+    ports:
+      - "8085:8085"
+    user: "0:0"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PORT=8085
+      - PYTHONPATH=/app/src
+    volumes:
+      # Mount source code, dataset and database for instant hot-reload and persistence
+      - ./src:/app/src
+      - ./output:/app/output
+      - ./audit_modifications.log:/app/audit_modifications.log
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8085/api/status"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 5s

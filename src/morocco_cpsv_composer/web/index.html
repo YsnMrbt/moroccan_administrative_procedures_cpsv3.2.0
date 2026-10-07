@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Royaume du Maroc المملكة المغربية - بوابة تحرير وتدقيق المساطر الإدارية CPSV-AP</title>
+  <link rel="stylesheet" href="/portal.css">
+</head>
+<body>
+
+  <!-- ==========================================
+       Official Header (Royaume du Maroc)
+       ========================================== -->
+  <!-- ==========================================
+       Official Header (Royaume du Maroc)
+       ========================================== -->
+  <header class="portal-header">
+    <div class="header-top">
+      <!-- Right side: National Symbols (Flag on the right of Coat of Arms) -->
+      <div class="header-right-symbols">
+        <div class="official-moroccan-flag" title="العلم الوطني للمملكة المغربية">
+          <img src="/flag_morocco.png" alt="علم المملكة المغربية" width="56" height="38" style="object-fit: cover; display: block; border-radius: 2px;">
+        </div>
+        <div class="royal-coat-of-arms" title="شعار المملكة المغربية الشريفة: إن تنصروا الله ينصركم">
+          <img src="/coat_of_arms.svg" alt="شعار المملكة المغربية" width="68" height="68" style="object-fit: contain; display: block;">
+        </div>
+      </div>
+
+      <!-- Left of the symbols: National Title & Subtitle in Times New Roman -->
+      <div class="header-title-container">
+        <h1 class="header-national-title">Royaume du Maroc المملكة المغربية</h1>
+        <div class="header-sub-title">Registre des procédures et services publics سجل الخدمات والمساطر الإدارية</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       Navigation Bar (Marchespublics / TGR Style)
+       ========================================== -->
+  <nav class="portal-navbar">
+    <div class="nav-container">
+      <div class="nav-item active" onclick="switchTab('composer')">
+        تحرير مسطرة جديدة
+      </div>
+      <div class="nav-item" onclick="switchTab('explorer')">
+        مستكشف وتدقيق المساطر
+      </div>
+      <div class="nav-item" onclick="switchTab('authorities')">
+        سجل الإدارات والمؤسسات
+      </div>
+      <div class="nav-item" onclick="switchTab('outputs')">
+        دليل الشواهد والخدمات المسلمة
+      </div>
+      <div class="nav-item" onclick="switchTab('evidences')">
+        دليل الوثائق والمستندات
+      </div>
+      <div class="nav-item" onclick="switchTab('shacl')">
+        منصة فحص المطابقة المباشر
+      </div>
+      <div class="nav-item" onclick="switchTab('auditlog')">
+        سجل تدقيق التعديلات
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       Main Content Container
+       ========================================== -->
+  <main class="main-wrapper">
+
+    <!-- ==========================================
+         TAB 1: Procedure Composer Form
+         ========================================== -->
+    <div id="tab-composer" class="tab-content">
+      <form id="procedureForm" onsubmit="event.preventDefault();">
+
+        <!-- Fieldset 1: General Info -->
+        <fieldset>
+          <legend>1. البيانات الأساسية للمسطرة الإدارية</legend>
+          <div class="form-grid">
+            <div class="col-8 form-group">
+              <label><span class="req">*</span> تسمية المسطرة الإدارية (بالعربية):</label>
+              <input type="text" id="service_title_ar" class="form-control" placeholder="مثال: رخصة البناء، البطاقة الوطنية للتعريف الإلكترونية..." required>
+            </div>
+            <div class="col-4 form-group">
+              <label>التسمية بالفرنسية (Titre en Français - اختياري):</label>
+              <input type="text" id="service_title_fr" class="form-control" placeholder="Ex: Carte Nationale d'Identité..." dir="ltr">
+            </div>
+
+            <div class="col-12 form-group">
+              <label><span class="req">*</span> الوصف الإداري لموضوع المسطرة والهدف منها:</label>
+              <textarea id="service_desc_ar" class="form-control" placeholder="وصف موجز وواضح للخدمة المقدمة للمرتفقين والشروط العامة للاستفادة..." required></textarea>
+            </div>
+
+            <div class="col-4 form-group">
+              <label>لغة المسطرة (Language):</label>
+              <select id="service_language" class="form-control">
+                <option value="ARA" selected>العربية (ARA - Publications Office)</option>
+                <option value="FRA">الفرنسية (FRA)</option>
+                <option value="BER">الأمازيغية (BER)</option>
+              </select>
+            </div>
+            <div class="col-4 form-group">
+              <label>النطاق الترابي (المجال الجغرافي):</label>
+              <select id="service_spatial" class="form-control" disabled>
+                <option value="MAR" selected>المملكة المغربية (MAR)</option>
+              </select>
+            </div>
+            <div class="col-4 form-group">
+              <label>المدة القانونية للمعالجة والتسليم (بالأيام):</label>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <input type="number" id="processing_time" class="form-control" min="0" step="1" placeholder="20" style="direction:ltr; text-align:center;" oninput="updateComposerProcessingPreview(this.value)">
+                <span style="font-weight:bold; font-size:12px; color:#333;">يوماً</span>
+                <span id="composer_processing_iso" class="badge-tag" style="background:#e8f0fe; color:#1a73e8; font-family:monospace; font-size:11px;">P20D</span>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Fieldset 2: Competent Authority -->
+        <fieldset>
+          <legend>2. الإدارة أو المؤسسة العمومية</legend>
+          <div class="form-grid">
+            <div class="col-9 form-group">
+              <label><span class="req">*</span> اختر الإدارة أو المؤسسة العمومية المعنية من السجل الوطني المعتمد:</label>
+              <select id="authority_select" class="form-control" onchange="updateAuthorityDetails()" required>
+                <option value="">-- جاري تحميل سجل الإدارات والمؤسسات العمومية... --</option>
+              </select>
+            </div>
+            <div class="col-3 form-group" style="align-self: flex-end;">
+              <button type="button" class="btn btn-default" onclick="openModal('modal-add-authority')" style="width: 100%;">
+                + تسجيل إدارة جديدة
+              </button>
+            </div>
+            <div class="col-12" id="authority_hierarchy_badge" style="display:none; font-size:12px; color:#1b4b7d; background:#eaf1f8; padding:6px 10px; border:1px solid #b4cbe0;">
+              <strong>التسلسل الإداري:</strong> <span id="auth_parent_text"></span>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Fieldset 3: Costs and Fees -->
+        <fieldset>
+          <legend>3. الرسوم</legend>
+          <div class="form-grid">
+            <div class="col-4 form-group">
+              <label>طبيعة المسطرة من حيث الأداء:</label>
+              <select id="fee_type" class="form-control" onchange="toggleFeeInputs()">
+                <option value="FREE" selected>مجانية بدون رسوم (Gratuit)</option>
+                <option value="PAID">بمقابل رسوم قانونية (Payant)</option>
+              </select>
+            </div>
+            <div class="col-4 form-group fee-field" style="display:none;">
+              <label><span class="req">*</span> المبلغ الواجب أداؤه:</label>
+              <input type="number" step="0.5" id="fee_amount" class="form-control" placeholder="0.00" value="0">
+            </div>
+            <div class="col-4 form-group fee-field" style="display:none;">
+              <label>العملة الرسمية (Currency):</label>
+              <select id="fee_currency" class="form-control">
+                <option value="MAD" selected>درهم مغربي (MAD - Default)</option>
+                <option value="EUR">يورو (EUR - للقنصليات بالخارج)</option>
+                <option value="USD">دولار أمريكي (USD)</option>
+              </select>
+            </div>
+            <div class="col-12 form-group fee-field" style="display:none;">
+              <label>تفصيل الرسم أو السند الجبائي:</label>
+              <input type="text" id="fee_desc" class="form-control" placeholder="مثال: واجبات التنبر 20 درهم، رسم الحالة المدنية، حقوق التسجيل...">
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Fieldset 4: Outputs (Deliverables) -->
+        <fieldset>
+          <legend>4. الشهادة أو الخدمة المسلمة</legend>
+          <div class="form-grid">
+            <div class="col-9 form-group">
+              <label>ابحث واختر الشهادة أو الخدمة المسلمة من القائمة المعتمدة:</label>
+              <input type="text" id="output_search_input" class="form-control" placeholder="اكتب للبحث في الشواهد والخدمات المسلمة..." oninput="searchOutputs(this.value)">
+              <div id="output_search_results" style="display:none; max-height:140px; overflow-y:auto; border:1px solid #7f9db9; background:#fff; position:absolute; z-index:100; width:60%;"></div>
+            </div>
+            <div class="col-3 form-group" style="align-self: flex-end;">
+              <button type="button" class="btn btn-default" onclick="openModal('modal-add-output')" style="width: 100%;">
+                + مخرج غير مدرج
+              </button>
+            </div>
+
+            <div class="col-12">
+              <label>الشهادات أو الخدمات المسلمة المعتمدة لهذه المسطرة:</label>
+              <div class="portal-table-container">
+                <table class="portal-table" id="selected_outputs_table">
+                  <thead>
+                    <tr>
+                      <th style="width: 70%;">تسمية الشهادة أو الخدمة المسلمة</th>
+                      <th style="width: 20%;">المعرف الدائم</th>
+                      <th style="width: 10%; text-align:center;">إجراء</th>
+                    </tr>
+                  </thead>
+                  <tbody id="selected_outputs_body">
+                    <tr id="no_outputs_row"><td colspan="3" style="text-align:center; color:#888;">لم يتم اختيار أي مخرج بعد. اختر من القائمة أو أضف مخرجاً جديداً.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Fieldset 5: Evidences (Required Documents) -->
+        <fieldset>
+          <legend>5. الوثائق والمستندات المطلوبة</legend>
+          <div class="form-grid">
+            <div class="col-9 form-group">
+              <label>ابحث واختر الوثيقة من السجل الوطني الموحد:</label>
+              <input type="text" id="evidence_search_input" class="form-control" placeholder="اكتب للبحث في سجل الوثائق والمستندات..." oninput="searchEvidences(this.value)">
+              <div id="evidence_search_results" style="display:none; max-height:140px; overflow-y:auto; border:1px solid #7f9db9; background:#fff; position:absolute; z-index:100; width:60%;"></div>
+            </div>
+            <div class="col-3 form-group" style="align-self: flex-end;">
+              <button type="button" class="btn btn-default" onclick="openModal('modal-add-evidence')" style="width: 100%;">
+                + وثيقة غير مدرجة
+              </button>
+            </div>
+
+            <div class="col-12">
+              <label>قائمة الوثائق المطلوبة لإيداع الملف:</label>
+              <div class="portal-table-container">
+                <table class="portal-table" id="selected_evidences_table">
+                  <thead>
+                    <tr>
+                      <th style="width: 70%;">تسمية الوثيقة المطلوبة</th>
+                      <th style="width: 20%;">التصنيف الإداري</th>
+                      <th style="width: 10%; text-align:center;">إجراء</th>
+                    </tr>
+                  </thead>
+                  <tbody id="selected_evidences_body">
+                    <tr id="no_evidences_row"><td colspan="3" style="text-align:center; color:#888;">لم يتم تحديد أي وثائق بعد. اختر من القائمة أو أضف وثيقة جديدة.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Fieldset 6: Channels -->
+        <fieldset>
+          <legend>6. الإدارة المكلفة بالاستلام وقنوات الإيداع</legend>
+          <div class="form-grid">
+            <div class="col-6 form-group">
+              <label>القناة الحضورية (مكتب الاستقبال / الشباك الإداري):</label>
+              <input type="text" id="channel_counter" class="form-control" placeholder="مثال: الملحقة الإدارية المختصة، مصلحة الجوازات...">
+            </div>
+            <div class="col-6 form-group">
+              <label>القناة الرقمية (رابط البوابة الإلكترونية إن وجدت):</label>
+              <input type="url" id="channel_portal_url" class="form-control" placeholder="https://..." dir="ltr">
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- ==========================================
+             Action Toolbar
+             ========================================== -->
+        <div class="toolbar-panel">
+          <div class="toolbar-buttons">
+            <button type="button" class="btn btn-success" onclick="runValidation()" id="btn-validate">
+              فحص المطابقة المعيارية SHACL
+            </button>
+            <button type="button" class="btn btn-primary" onclick="saveProcedure()" id="btn-save" disabled>
+              تسجيلها في قاعدة البيانات
+            </button>
+            <button type="button" class="btn btn-default" onclick="toggleTurtlePreview()">
+              معاينة تمثيل RDF / Turtle
+            </button>
+            <button type="button" class="btn btn-default" onclick="resetForm()">
+              تفريغ الاستمارة
+            </button>
+          </div>
+          <div>
+            <span id="validation-quick-status" style="font-weight:bold; color:#555;">الحالة: جاهز للفحص</span>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- ==========================================
+           Validation Feedback Console
+           ========================================== -->
+      <div class="validation-card" id="validation-section" style="display:none;">
+        <div class="validation-header">
+          <span>نتائج التدقيق المعياري الرسمي (European Commission SEMIC CPSV-AP 3.2.0)</span>
+          <span id="val-time-badge" style="font-size:11px; background:rgba(255,255,255,0.2); padding:2px 6px; border-radius:2px;"></span>
+        </div>
+        <div class="validation-body">
+          <div id="val-result-box"></div>
+
+          <div id="val-violations-list" style="display:none; margin-top:10px;">
+            <div style="font-weight:bold; color:#c62828; margin-bottom:5px;">تفاصيل المخالفات المرصودة:</div>
+            <div class="portal-table-container">
+              <table class="portal-table">
+                <thead>
+                  <tr>
+                    <th>العقدة (Focus Node)</th>
+                    <th>الخاصية (Path)</th>
+                    <th>رسالة المخالفة (Message)</th>
+                  </tr>
+                </thead>
+                <tbody id="val-violations-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="turtle-preview-container" style="display:none; margin-top:15px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+              <strong>معاينة تمثيل RDF الرسمي (Turtle Syntax):</strong>
+              <button type="button" class="btn btn-default btn-action-small" onclick="copyTurtleCode()">نسخ كود Turtle</button>
+            </div>
+            <div id="turtle-code-box" class="code-preview"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==========================================
+         TAB: Procedures Explorer & Direct Curator
+         ========================================== -->
+    <div id="tab-explorer" class="tab-content" style="display:none;">
+      <div class="form-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <h3 style="margin:0 0 4px 0; font-size:16px;">مستكشف وتدقيق المساطر والخدمات العمومية (معاينة وتعديل مباشر)</h3>
+            <div style="font-size:12px; color:#555;">ابحث عن أي مسطرة بالاسم، واطلع على التكلفة والإدارة المختصة والوثائق المطلوبة، وقم بتعديلها وتدقيق مطابقتها فورياً.</div>
+          </div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" class="btn btn-default btn-action-small" onclick="loadExplorerProcedures('')">عرض الكل</button>
+          </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div style="display:flex; gap:10px; margin-bottom:15px;">
+          <input type="text" id="explorer_search_input" class="form-control" placeholder="اكتب للبحث الفوري عن مسطرة (مثال: شهادة السكنى، جواز السفر، البطاقة الوطنية، رخصة البناء، PS-2376)..." oninput="onExplorerSearchInput(this.value)" style="font-size:14px; padding:10px;">
+          <button type="button" class="btn btn-primary" onclick="searchExplorerNow()" style="min-width:110px;">بحث مباشر</button>
+        </div>
+
+        <!-- Explorer Two-Panel Split Layout -->
+        <div style="display:grid; grid-template-columns: 46% 54%; gap:16px; align-items:start;">
+          
+          <!-- Left side: Results Table / List -->
+          <div class="card-box" style="border:1px solid #d0d7de; background:#fff; padding:10px; border-radius:4px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:6px;">
+              <strong style="font-size:13px;">نتائج البحث: <span id="explorer_total_count" style="color:#005a9c;">2,391</span> مسطرة إدارية</strong>
+              <span id="explorer_loading_indicator" style="font-size:11px; color:#666; display:none;">جاري التحميل...</span>
+            </div>
+            
+            <div id="explorer_list_container" class="portal-table-container" style="max-height: 520px; overflow-y:auto;">
+              <!-- Dynamic procedure list items inserted here -->
+            </div>
+          </div>
+
+          <!-- Right side: Inspector & In-Place Editor -->
+          <div class="card-box" id="explorer_editor_card" style="border:1px solid #005a9c; background:#fbfcfe; padding:14px; border-radius:4px;">
+            
+            <div id="explorer_editor_placeholder" style="text-align:center; padding:70px 20px; color:#777;">
+              <div style="font-size:15px; margin-bottom:8px; font-weight:bold; color:#005a9c;">حدد مسطرة إدارية من القائمة للمعاينة والتدقيق السريع</div>
+              <div style="font-size:12px; line-height:1.6;">يمكنك معاينة الرسوم، الإدارة أو المؤسسة العمومية المسؤولة، وحزمة الوثائق والمستندات المطلوبة، وتعديلها مع إجراء فحص المطابقة الفوري SHACL.</div>
+            </div>
+
+            <div id="explorer_editor_form" style="display:none;">
+              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #005a9c; padding-bottom:8px; margin-bottom:12px;">
+                <div>
+                  <span class="badge-tag" id="edit_ps_badge" style="background:#005a9c; color:#fff; font-size:12px;">PS-XXXX</span>
+                  <span id="edit_ps_status_badge" class="badge-tag" style="background:#2e7d32; color:#fff; font-size:11px; margin-right:6px;">مطابق CPSV-AP</span>
+                </div>
+                <div style="font-size:12px; color:#555;">المعرف الرقمي: <code id="edit_ps_db_id">#000</code></div>
+              </div>
+
+              <!-- Title -->
+              <div class="form-group" style="margin-bottom:10px;">
+                <label style="font-size:12px; font-weight:bold;"><span class="req">*</span> تسمية المسطرة الإدارية:</label>
+                <input type="text" id="edit_title" class="form-control" style="font-weight:bold; font-size:13px;">
+              </div>
+
+              <!-- Description -->
+              <div class="form-group" style="margin-bottom:10px;">
+                <label style="font-size:12px; font-weight:bold;">وصف المسطرة والإجراء الإداري:</label>
+                <textarea id="edit_description" class="form-control" rows="2" style="font-size:12px;"></textarea>
+              </div>
+
+              <!-- Authority & Cost Grid -->
+              <div style="display:grid; grid-template-columns: 65% 35%; gap:10px; margin-bottom:10px;">
+                <div class="form-group" style="position:relative;">
+                  <label style="font-size:12px; font-weight:bold;"><span class="req">*</span> الإدارة أو المؤسسة العمومية (بحث وتحديد):</label>
+                  <input type="text" id="edit_authority_search" class="form-control" style="font-size:12px;" placeholder="اكتب للبحث السريع (مثال: الدرك، الأمن، الداخلية)..." oninput="filterEditAuthorityDropdown(this.value)" onfocus="showEditAuthorityDropdown()" autocomplete="off">
+                  <input type="hidden" id="edit_authority_id" value="1">
+                  <div id="edit_authority_dropdown" style="display:none; position:absolute; top:100%; right:0; left:0; z-index:1000; background:#fff; border:1px solid #7f9db9; max-height:180px; overflow-y:auto; box-shadow:0 4px 8px rgba(0,0,0,0.15);"></div>
+                  <select id="edit_authority" class="form-control" style="display:none;"></select>
+                </div>
+                <div class="form-group">
+                  <label style="font-size:12px; font-weight:bold;">الرسوم (درهم MAD):</label>
+                  <div style="display:flex; align-items:center; gap:4px;">
+                    <input type="number" id="edit_cost" class="form-control" step="0.5" min="0" style="font-size:12px;">
+                    <span style="font-size:11px; font-weight:bold; color:#005a9c;">درهم</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Output & Processing Time Grid -->
+              <div style="display:grid; grid-template-columns: 65% 35%; gap:10px; margin-bottom:12px;">
+                <div class="form-group" style="position:relative;">
+                  <label style="font-size:12px; font-weight:bold;">الشهادة أو الخدمة المسلمة:</label>
+                  <div style="display:flex; gap:4px;">
+                    <input type="text" id="edit_output_title" class="form-control" style="font-size:12px;" placeholder="حدد أو ابحث في الشواهد المعتمدة (شهادة السكنى، جواز السفر...)" oninput="filterEditOutputDropdown(this.value)" onfocus="showEditOutputDropdown()" autocomplete="off">
+                    <button type="button" class="btn btn-default" onclick="clearEditOutput()" style="font-size:11px; padding:2px 8px;" title="تفريغ الحقل">مسح</button>
+                    <button type="button" class="btn btn-default" onclick="openModal('modal-add-output')" style="font-size:11px; padding:2px 8px; white-space:nowrap; background:#e8f0fe; color:#0b5394; font-weight:bold;" title="تسجيل مخرج جديد في السجل">+ مخرج جديد</button>
+                  </div>
+                  <input type="hidden" id="edit_output_id" value="">
+                  <div id="edit_output_dropdown" style="display:none; position:absolute; top:100%; right:0; left:0; z-index:1000; background:#fff; border:1px solid #7f9db9; max-height:160px; overflow-y:auto; box-shadow:0 4px 8px rgba(0,0,0,0.15);"></div>
+                </div>
+                <div class="form-group">
+                  <label style="font-size:12px; font-weight:bold;">المدة القانونية (بالأيام):</label>
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <input type="number" id="edit_processing_days" class="form-control" min="0" step="1" style="font-size:12px; direction:ltr; text-align:center;" placeholder="20" oninput="updateEditProcessingPreview(this.value)">
+                    <span style="font-size:12px; font-weight:bold;">يوماً</span>
+                    <span id="edit_processing_iso" class="badge-tag" style="background:#e8f0fe; color:#1a73e8; font-family:monospace; font-size:11px;">P20D</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Required Evidences (Documents) -->
+              <div class="form-group" style="margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <label style="font-size:12px; font-weight:bold; margin:0;">الوثائق والمستندات المطلوبة (<span id="edit_evidences_count">0</span>):</label>
+                  <span style="font-size:11px; color:#666;">انقر على العلامة (×) لحذف أي وثيقة من المسطرة</span>
+                </div>
+                
+                <!-- Tag container -->
+                <div id="edit_evidences_tag_container" style="display:flex; flex-wrap:wrap; gap:6px; min-height:48px; padding:8px; background:#fff; border:1px solid #ced4da; border-radius:3px; margin-bottom:8px;">
+                  <!-- Dynamic tags -->
+                </div>
+
+                <!-- Add evidence input with autocomplete -->
+                <div style="display:flex; gap:6px; position:relative;">
+                  <div style="flex:1; position:relative;">
+                    <input type="text" id="edit_add_evidence_input" class="form-control" placeholder="ابحث في السجل أو اكتب اسم وثيقة جديدة لإضافتها إلى هذه المسطرة..." style="font-size:12px;" oninput="filterEditEvidenceDropdown(this.value)" onfocus="showEditEvidenceDropdown()" onkeydown="if(event.key==='Enter'){event.preventDefault();addEvidenceToEditedProcedure();}" autocomplete="off">
+                    <div id="edit_evidence_dropdown" style="display:none; position:absolute; top:100%; right:0; left:0; z-index:1000; background:#fff; border:1px solid #7f9db9; max-height:160px; overflow-y:auto; box-shadow:0 4px 8px rgba(0,0,0,0.15);"></div>
+                  </div>
+                  <button type="button" class="btn btn-default" onclick="addEvidenceToEditedProcedure()" style="white-space:nowrap; font-size:12px;">+ إضافة للمسطرة</button>
+                  <button type="button" class="btn btn-default" onclick="openModal('modal-add-evidence')" style="white-space:nowrap; font-size:11px; padding:2px 8px; background:#e8f0fe; color:#0b5394; font-weight:bold;" title="تسجيل وثيقة رسمية جديدة في السجل الوطني">+ وثيقة جديدة في السجل</button>
+                </div>
+              </div>
+
+              <!-- Actions & Validation Box -->
+              <div style="border-top:1px solid #ddd; padding-top:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <button type="button" class="btn btn-primary" onclick="saveEditedProcedure()" style="background:#1b5e20; border-color:#2e7d32;">تسجيلها في قاعدة البيانات</button>
+                  <button type="button" class="btn btn-default" onclick="validateEditedProcedureDraft()">فحص المطابقة SHACL للمسطرة</button>
+                  <button type="button" class="btn btn-danger" onclick="deleteCurrentProcedure()" style="background:#c62828; color:#fff; border-color:#b71c1c;">حذف المسطرة</button>
+                </div>
+                <button type="button" class="btn btn-default" onclick="toggleEditTurtlePreview()" style="font-size:11px;">معاينة كود Turtle</button>
+              </div>
+
+              <!-- Edit Status & Validation Result Banner -->
+              <div id="edit_validation_status_box" style="margin-top:10px; display:none;"></div>
+
+              <!-- Turtle Preview Container -->
+              <div id="edit_turtle_preview_box" class="code-preview" style="margin-top:10px; display:none; max-height:220px;"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==========================================
+         TAB 2: Authorities Interactive Manager
+         ========================================== -->
+    <div id="tab-authorities" class="tab-content" style="display:none;">
+      <div class="form-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <h3 style="margin:0 0 4px 0; font-size:16px;">السجل الوطني للإدارات والمؤسسات العمومية</h3>
+            <div style="font-size:12px; color:#555;">دليل المؤسسات والإدارات العمومية وفق معيار SEMIC CPSV-AP (تعديل وتدقيق مباشر).</div>
+          </div>
+          <button type="button" class="btn btn-default btn-action-small" onclick="openModal('modal-add-authority')">+ تسجيل إدارة جديدة</button>
+        </div>
+
+        <div class="entity-split-view">
+          <!-- Left side: List with Search -->
+          <div class="entity-list-pane">
+            <div style="padding:10px; border-bottom:1px solid #d0d7de; background:#f6f8fa;">
+              <input type="text" id="auth_tab_search" class="form-control" placeholder="بحث في الإدارات والمؤسسات..." oninput="onAuthoritySearchInput(this.value)">
+            </div>
+            <div id="authorities_list_pane" class="entity-list-scroll">
+              <!-- Dynamically populated authority items -->
+            </div>
+          </div>
+
+          <!-- Right side: Inspector Panel -->
+          <div class="entity-inspector-pane" id="authority_inspector_pane">
+            <div id="auth_inspector_placeholder" style="text-align:center; padding:90px 20px; color:#777;">
+              <div style="font-size:15px; margin-bottom:8px; font-weight:bold; color:#005a9c;">حدد إدارة عمومية لمعاينة بياناتها المعيارية وتعديلها</div>
+              <div style="font-size:12px;">الحقول الإجبارية وفق معيار SEMIC CPSV-AP مميزة بنجمة حمراء (*).</div>
+            </div>
+
+            <div id="auth_inspector_form" style="display:none;">
+              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #005a9c; padding-bottom:8px; margin-bottom:14px;">
+                <div>
+                  <span class="badge-tag" id="auth_insp_badge" style="background:#005a9c; color:#fff; font-size:12px;">ORG-XXX</span>
+                  <span class="badge-tag" id="auth_insp_count_badge" style="background:#2e7d32; color:#fff; font-size:11px; margin-right:6px;">0 مسطرة</span>
+                </div>
+                <div style="display:flex; gap:6px;">
+                  <button type="button" class="btn btn-primary btn-action-small" onclick="saveAuthorityInspector()">حفظ التعديل</button>
+                  <button type="button" class="btn btn-danger btn-action-small" onclick="deleteAuthorityInspector()">حذف</button>
+                </div>
+              </div>
+
+              <!-- Mandatory: skos:prefLabel -->
+              <div class="form-group" style="margin-bottom:12px;">
+                <label style="font-size:12px; font-weight:bold;"><span class="req-star">*</span> التسمية الرسمية للإدارة أو المؤسسة العمومية:</label>
+                <input type="text" id="auth_insp_name" class="form-control" required style="font-weight:bold; font-size:13px;">
+              </div>
+
+              <!-- Mandatory: dct:identifier -->
+              <div class="form-group" style="margin-bottom:12px;">
+                <label style="font-size:12px; font-weight:bold;"><span class="req-star">*</span> المعرف الإداري الدائم:</label>
+                <input type="text" id="auth_insp_slug" class="form-control" readonly style="background:#f4f6f8; font-family:monospace; direction:ltr;">
+              </div>
+
+              <!-- Mandatory: dct:spatial -->
+              <div class="form-group" style="margin-bottom:12px;">
+                <label style="font-size:12px; font-weight:bold;"><span class="req-star">*</span> النطاق الترابي (المجال الجغرافي):</label>
+                <select id="auth_insp_spatial" class="form-control">
+                  <option value="MAR" selected>المملكة المغربية (MAR - Publications Office)</option>
+                </select>
+              </div>
+
+              <!-- Optional: org:classification -->
+              <div class="form-group" style="margin-bottom:12px;">
+                <label style="font-size:12px; font-weight:bold;">التصنيف المؤسساتي:</label>
+                <select id="auth_insp_classification" class="form-control">
+                  <option value="وزارة / قطاع حكومي">وزارة / قطاع حكومي</option>
+                  <option value="مؤسسة عمومية / إدارة" selected>مؤسسة عمومية / إدارة</option>
+                  <option value="جماعة ترابية / عمالة / ولاية">جماعة ترابية / عمالة / ولاية</option>
+                  <option value="سفارة أو قنصلية بالخارج">سفارة أو قنصلية بالخارج</option>
+                  <option value="هيئة ضبط أو حكامة">هيئة ضبط أو حكامة</option>
+                </select>
+              </div>
+
+              <!-- Optional: org:subOrganizationOf -->
+              <div class="form-group" style="margin-bottom:14px;">
+                <label style="font-size:12px; font-weight:bold;">الهيئة الإدارية الأم التابعة لها:</label>
+                <input type="text" id="auth_insp_parent" class="form-control" placeholder="المملكة المغربية">
+              </div>
+
+              <!-- Feedback status -->
+              <div id="auth_insp_msg" style="display:none; font-size:12px; padding:8px; border-radius:3px; margin-top:8px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         TAB 3: Outputs Interactive Manager
+         ========================================== -->
+    <div id="tab-outputs" class="tab-content" style="display:none;">
+      <div class="form-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <h3 style="margin:0 0 4px 0; font-size:16px;">دليل الشواهد والخدمات المسلمة</h3>
+            <div style="font-size:12px; color:#555;">دليل المخرجات الإدارية والشهادات الرسمية المسلمة للمرتفقين وفق معيار SEMIC CPSV-AP.</div>
+          </div>
+          <button type="button" class="btn btn-default btn-action-small" onclick="openModal('modal-add-output')">+ تسجيل مخرج جديد</button>
+        </div>
+
+        <div class="entity-split-view">
+          <!-- Left side: List with Search -->
+          <div class="entity-list-pane">
+            <div style="padding:10px; border-bottom:1px solid #d0d7de; background:#f6f8fa;">
+              <input type="text" id="output_tab_search" class="form-control" placeholder="بحث في الشواهد والخدمات المسلمة..." oninput="onOutputSearchInput(this.value)">
+            </div>
+            <div id="outputs_list_pane" class="entity-list-scroll">
+              <!-- Dynamically populated output items -->
+            </div>
+          </div>
+
+          <!-- Right side: Inspector Panel -->
+          <div class="entity-inspector-pane" id="output_inspector_pane">
+            <div id="output_inspector_placeholder" style="text-align:center; padding:90px 20px; color:#777;">
+              <div style="font-size:15px; margin-bottom:8px; font-weight:bold; color:#005a9c;">حدد شهادة أو مخرجاً لمعاينة وتعديل بياناته المعيارية</div>
+              <div style="font-size:12px;">الحقول الإجبارية وفق معيار SEMIC CPSV-AP مميزة بنجمة حمراء (*).</div>
+            </div>
+
+            <div id="output_inspector_form" style="display:none;">
+              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #005a9c; padding-bottom:8px; margin-bottom:14px;">
+                <div>
+                  <span class="badge-tag" id="output_insp_badge" style="background:#005a9c; color:#fff; font-size:12px;">OUT-XXX</span>
+                  <span class="badge-tag" id="output_insp_count_badge" style="background:#2e7d32; color:#fff; font-size:11px; margin-right:6px;">0 مسطرة</span>
+                </div>
+                <div style="display:flex; gap:6px;">
+                  <button type="button" class="btn btn-primary btn-action-small" onclick="saveOutputInspector()">حفظ التعديل</button>
+                  <button type="button" class="btn btn-danger btn-action-small" onclick="deleteOutputInspector()">حذف</button>
+                </div>
+              </div>
+
+              <!-- Mandatory: dct:title -->
+              <div class="form-group" style="margin-bottom:12px;">
+                <label style="font-size:12px; font-weight:bold;"><span class="req-star">*</span> تسمية الشهادة أو الخدمة المسلمة:</label>
+                <input type="text" id="output_insp_title" class="form-control" required style="font-weight:bold; font-size:13px;">
+              </div>
+
+              <!-- Mandatory: dct:identifier -->
+              <div class="form-group" style="margin-bottom:12px;">
+                <label style="font-size:12px; font-weight:bold;"><span class="req-star">*</span> المعرف الرقمي الدائم:</label>
+                <input type="text" id="output_insp_slug" class="form-control" readonly style="background:#f4f6f8; font-family:monospace; direction:ltr;">
+              </div>
+
+              <!-- Optional: dct:description -->
+              <div class="form-group" style="margin-bottom:12px;">
+                <label style="font-size:12px; font-weight:bold;">الوصف الإداري للمخرج المسلم:</label>
+                <textarea id="output_insp_desc" class="form-control" rows="3" placeholder="وصف الشهادة أو الوثيقة المسلمة وطبيعتها القانونية..."></textarea>
+              </div>
+
+              <!-- Optional: dct:type -->
+              <div class="form-group" style="margin-bottom:12px;">
+                <label style="font-size:12px; font-weight:bold;">نوع المخرج المسلم:</label>
+                <select id="output_insp_type" class="form-control">
+                  <option value="شهادة إدارية رسمية" selected>شهادة إدارية رسمية</option>
+                  <option value="وثيقة إثبات هوية أو سفر">وثيقة إثبات هوية أو سفر</option>
+                  <option value="رخصة أو إذن إداري">رخصة أو إذن إداري</option>
+                  <option value="وصل إيداع أو تسجيل">وصل إيداع أو تسجيل</option>
+                  <option value="مقرر أو ترخيص مهني">مقرر أو ترخيص مهني</option>
+                </select>
+              </div>
+
+              <!-- Optional: dct:language -->
+              <div class="form-group" style="margin-bottom:14px;">
+                <label style="font-size:12px; font-weight:bold;">لغة إصدار الوثيقة المسلمة:</label>
+                <select id="output_insp_lang" class="form-control">
+                  <option value="ar" selected>العربية (ar)</option>
+                  <option value="ar-fr">ثنائي اللغة: عربية / فرنسية (ar/fr)</option>
+                  <option value="fr">الفرنسية (fr)</option>
+                </select>
+              </div>
+
+              <!-- Feedback status -->
+              <div id="output_insp_msg" style="display:none; font-size:12px; padding:8px; border-radius:3px; margin-top:8px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         TAB 4: Evidences Explorer
+         ========================================== -->
+    <div id="tab-evidences" class="tab-content" style="display:none;">
+      <div class="form-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h3>دليل الوثائق والمستندات المطلوبة</h3>
+          <button type="button" class="btn btn-default" onclick="openModal('modal-add-evidence')">+ تسجيل وثيقة جديدة</button>
+        </div>
+        <input type="text" class="form-control" placeholder="تصفية الوثائق..." oninput="filterEvidencesTab(this.value)" style="margin-bottom:10px;">
+        <div class="portal-table-container" style="max-height: 480px;">
+          <table class="portal-table">
+            <thead>
+              <tr>
+                <th style="width: 10%;">المعرف</th>
+                <th style="width: 60%;">تسمية الوثيقة المطلوبة</th>
+                <th style="width: 30%;">التصنيف</th>
+              </tr>
+            </thead>
+            <tbody id="full_evidences_tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         TAB 5: Direct SHACL Raw Validator
+         ========================================== -->
+    <div id="tab-shacl" class="tab-content" style="display:none;">
+      <div class="form-panel">
+        <h3>منصة التحقق المباشر من مطابقة تمثيلات RDF/Turtle (SEMIC CPSV-AP 3.2.0)</h3>
+        <p style="color:#666; margin:6px 0 12px 0;">يمكنك إدراج أي كود RDF/Turtle هنا للتحقق الفوري منه محلياً وبشكل آمن تماماً:</p>
+        <textarea id="raw_turtle_input" class="code-preview" style="height:250px; width:100%;" placeholder="@prefix cv: <http://data.europa.eu/m8g/> ..."></textarea>
+        <div style="margin-top:10px;">
+          <button type="button" class="btn btn-success" onclick="validateRawTurtle()">فحص الكود الآن</button>
+        </div>
+      </div>
+    </div>
+    <!-- ==========================================
+         TAB 6: Audit Modifications Log Viewer
+         ========================================== -->
+    <div id="tab-auditlog" class="tab-content" style="display:none;">
+      <div class="form-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <h3 style="margin:0;">سجل تدقيق التعديلات والإضافات والحذف (Audit Modifications Log)</h3>
+            <p style="color:#666; margin:4px 0 0 0; font-size:12px;">
+              سجل رسمي يوثق كافة التعديلات، الإضافات، والحذف على المساطر، الإدارات، الوثائق، والمخرجات مع التوقيت الدقيق بالساعة والدقيقة والثانية (hh:mm:ss).
+            </p>
+          </div>
+          <button type="button" class="btn btn-default" onclick="loadAuditLogs()" style="font-size:12px;">
+            تحديث السجل
+          </button>
+        </div>
+
+        <div class="portal-table-container" style="max-height:550px; overflow-y:auto;">
+          <table class="portal-table" id="audit_log_table">
+            <thead>
+              <tr>
+                <th style="width: 12%; text-align:center;">التوقيت (hh:mm:ss)</th>
+                <th style="width: 15%;">نوع العنصر</th>
+                <th style="width: 25%;">معرف العنصر (Entity ID)</th>
+                <th style="width: 18%;">الخاصية (Attribute)</th>
+                <th style="width: 30%;">الإجراء والتفاصيل</th>
+              </tr>
+            </thead>
+            <tbody id="audit_log_body">
+              <tr><td colspan="5" style="text-align:center; color:#888;">جاري تحميل سجل التدقيق...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==========================================
+       Modals for "+ Add New"
+       ========================================== -->
+
+  <!-- Modal 1: Add Authority -->
+  <div id="modal-add-authority" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-titlebar">
+        <span>تسجيل إدارة أو هيئة عمومية جديدة</span>
+        <span class="modal-close-btn" onclick="closeModal('modal-add-authority')">X</span>
+      </div>
+      <div class="modal-content">
+        <div class="form-group" style="margin-bottom:10px;">
+          <label><span class="req">*</span> التسمية الرسمية للإدارة (بالعربية):</label>
+          <input type="text" id="new_auth_name" class="form-control" placeholder="مثال: الوكالة الحضرية لمدينة...">
+        </div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label>الإدارة الأم التابعة لها (Parent Organization):</label>
+          <input type="text" id="new_auth_parent" class="form-control" placeholder="مثال: وزارة إعداد التراب الوطني والتعمير والإسكان">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="submitNewAuthority()">حفظ وتسجيل</button>
+        <button type="button" class="btn btn-default" onclick="closeModal('modal-add-authority')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add Output -->
+  <div id="modal-add-output" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-titlebar">
+        <span>تسجيل مخرج أو شهادة إدارية جديدة في السجل الوطني</span>
+        <span class="modal-close-btn" onclick="closeModal('modal-add-output')">X</span>
+      </div>
+      <div class="modal-content">
+        <div class="form-group">
+          <label><span class="req">*</span> تسمية المخرج أو الوثيقة المسلمة:</label>
+          <input type="text" id="new_output_title" class="form-control" placeholder="مثال: رخصة استغلال، شهادة المطابقة...">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="submitNewOutput()">حفظ وتسجيل المخرج</button>
+        <button type="button" class="btn btn-default" onclick="closeModal('modal-add-output')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Add Evidence -->
+  <div id="modal-add-evidence" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-titlebar">
+        <span>تسجيل وثيقة أو مستند جديد في السجل الوطني</span>
+        <span class="modal-close-btn" onclick="closeModal('modal-add-evidence')">X</span>
+      </div>
+      <div class="modal-content">
+        <div class="form-group" style="margin-bottom:10px;">
+          <label><span class="req">*</span> تسمية الوثيقة المطلوبة:</label>
+          <input type="text" id="new_evidence_title" class="form-control" placeholder="مثال: تصميم هندسي مصادق عليه...">
+        </div>
+        <div class="form-group">
+          <label>نوع الوثيقة:</label>
+          <select id="new_evidence_category" class="form-control">
+            <option value="وثيقة عادية (Standard Document)">وثيقة عادية</option>
+            <option value="إثبات الهوية (Identity Document)">إثبات الهوية</option>
+            <option value="شهادة إدارية / طبية / سكنى">شهادة إدارية / طبية</option>
+            <option value="مطبوع / استمارة الطلب">مطبوع / استمارة الطلب</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="submitNewEvidence()">حفظ وتسجيل الوثيقة</button>
+        <button type="button" class="btn btn-default" onclick="closeModal('modal-add-evidence')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       Institutional Status Bar (Classic Footer)
+       ========================================== -->
+  <footer class="portal-footer">
+    <div class="footer-citations-grid">
+      <!-- Card 1: procedures_administratives_cpsv.ma -->
+      <div class="footer-citation-card">
+        <div class="footer-citation-title">البوابة الوطنية للمساطر والخدمات الإدارية</div>
+        <div class="footer-citation-text">
+          المصدر المرجعي للبيانات والمساطر الإدارية بالمملكة المغربية: 
+          <a href="https://procedures_administratives_cpsv.ma" target="_blank" rel="noopener noreferrer" class="footer-citation-link">procedures_administratives_cpsv.ma</a>
+        </div>
+      </div>
+
+      <!-- Card 2: data.gov.ma under Open DB 4.0 -->
+      <div class="footer-citation-card">
+        <div class="footer-citation-title">البيانات المفتوحة للمملكة المغربية</div>
+        <div class="footer-citation-text">
+          مستودع البيانات الوطنية المفتوحة 
+          <a href="https://data.gov.ma" target="_blank" rel="noopener noreferrer" class="footer-citation-link">data.gov.ma</a> 
+          وفق رخصة إعادة الاستخدام العمومية المفتوحة (Open Licence v4.0).
+        </div>
+      </div>
+
+      <!-- Card 3: SEMIC CPSV-AP GitHub -->
+      <div class="footer-citation-card">
+        <div class="footer-citation-title">معيار SEMIC CPSV-AP الرسمي</div>
+        <div class="footer-citation-text">
+          مواصفات نموذج البيانات الأساسي المشترك للخدمات العامة الصادر عن المفوضية الأوروبية:
+          <a href="https://github.com/SEMICeu/CPSV-AP" target="_blank" rel="noopener noreferrer" class="footer-citation-link">github.com/SEMICeu/CPSV-AP</a>
+        </div>
+      </div>
+
+      <!-- Card 4: Project License under CC BY 4.0 -->
+      <div class="footer-citation-card">
+        <div class="footer-citation-title">رخصة المشروع الحرة المفتوحة</div>
+        <div class="footer-citation-text">
+          مرخص ومتاح بموجب رخصة المشاع الإبداعي نَسب المُصنَّف 4.0 الدولية: 
+          <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" class="footer-citation-link">Creative Commons CC BY 4.0</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom-copy">
+      المملكة المغربية — منصة تحرير وتدقيق المساطر والخدمات العمومية CPSV-AP 3.2.0 | جميع الحقوق محفوظة للجهات المرجعية الرسمية
+    </div>
+  </footer>
+
+  <script src="/portal.js"></script>
+</body>
+</html>

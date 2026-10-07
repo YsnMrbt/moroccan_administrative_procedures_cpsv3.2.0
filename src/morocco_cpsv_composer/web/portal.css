@@ -1,0 +1,627 @@
+/* ==========================================================================
+   المملكة المغربية - البوابة الوطنية للمساطر والخدمات العمومية (CPSV-AP)
+   Official Institutional Moroccan Administration Theme (Classic Portal / TGR Style)
+   ========================================================================== */
+
+:root {
+  --gov-blue-dark: #0f355c;
+  --gov-blue-primary: #1b4b7d;
+  --gov-blue-light: #2d629a;
+  --gov-blue-bg: #eaf1f8;
+  --gov-gold: #c59b27;
+  --gov-gold-light: #ecd189;
+  --gov-red: #c0392b;
+  --gov-green: #27ae60;
+  --gov-gray-bg: #edf1f5;
+  --gov-border: #9cb5ce;
+  --gov-border-light: #d0dce8;
+  --gov-text: #222222;
+  --gov-text-muted: #555555;
+  --morocco-flag-header-gradient: linear-gradient(135deg, 
+    #9e1b20 0%, 
+    #be262d 28%, 
+    #6b422a 43%, 
+    #006233 48%, 
+    #006233 52%, 
+    #6b422a 57%, 
+    #be262d 72%, 
+    #9e1b20 100%
+  );
+  --gov-header-gradient: var(--morocco-flag-header-gradient);
+  --gov-table-header: linear-gradient(180deg, #2b5d92 0%, #1a426d 100%);
+  --gov-btn-default: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
+  --gov-btn-primary: linear-gradient(180deg, #2b6cb0 0%, #1a4971 100%);
+  --gov-btn-success: linear-gradient(180deg, #2e7d32 0%, #1b5e20 100%);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Tahoma, Arial, "Segoe UI", sans-serif;
+}
+
+body {
+  direction: rtl;
+  background-color: var(--gov-gray-bg);
+  color: var(--gov-text);
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================
+   Header Banner (Le Royaume du Maroc)
+   ========================================== */
+.portal-header {
+  background: var(--morocco-flag-header-gradient);
+  border-bottom: 3px solid var(--gov-gold);
+  color: #ffffff;
+  padding: 12px 24px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+.header-right-symbols {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.royal-coat-of-arms {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.45));
+}
+
+.official-moroccan-flag {
+  border: 1px solid #c59b27;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.header-title-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.header-national-title {
+  font-family: "Times New Roman", Times, "Amiri", "Traditional Arabic", serif;
+  font-size: 26px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+  line-height: 1.2;
+}
+
+.header-sub-title {
+  font-family: "Times New Roman", Times, "Amiri", "Traditional Arabic", serif;
+  font-size: 15px;
+  font-weight: normal;
+  color: #f7e6a1;
+  margin-top: 4px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.header-badges {
+  display: flex;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.badge-tag {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+/* ==========================================
+   Navigation Menu Bar (TGR / Marchespublics)
+   ========================================== */
+.portal-navbar {
+  background: #14355a;
+  border-bottom: 1px solid #0d233d;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.nav-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.nav-item {
+  padding: 9px 18px;
+  color: #e2edf8;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 13px;
+  border-left: 1px solid #1a416d;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.15s ease;
+}
+
+.nav-item:hover {
+  background: #1c4b7d;
+  color: #ffffff;
+}
+
+.nav-item.active {
+  background: #eef2f6;
+  color: var(--gov-blue-dark);
+  border-top: 3px solid var(--gov-gold);
+  margin-top: -1px;
+}
+
+/* ==========================================
+   Main Container Layout
+   ========================================== */
+.main-wrapper {
+  max-width: 1280px;
+  width: 100%;
+  margin: 15px auto;
+  padding: 0 15px;
+  flex: 1;
+}
+
+/* Notice Bar */
+.official-notice {
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  border-right: 4px solid var(--gov-gold);
+  padding: 8px 12px;
+  margin-bottom: 15px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #5d4037;
+}
+
+/* Form Sections (Fieldsets) */
+.form-panel {
+  background: #ffffff;
+  border: 1px solid var(--gov-border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  padding: 15px 20px;
+  margin-bottom: 15px;
+}
+
+fieldset {
+  border: 1px solid var(--gov-border);
+  padding: 14px 18px 16px 18px;
+  margin-bottom: 15px;
+  background: #ffffff;
+}
+
+legend {
+  font-weight: bold;
+  color: var(--gov-blue-dark);
+  padding: 0 8px;
+  font-size: 13px;
+  border: 1px solid var(--gov-border-light);
+  background: #f4f8fc;
+  border-radius: 2px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.col-12 { grid-column: span 12; }
+.col-9 { grid-column: span 9; }
+.col-8 { grid-column: span 8; }
+.col-6 { grid-column: span 6; }
+.col-4 { grid-column: span 4; }
+.col-3 { grid-column: span 3; }
+.col-2 { grid-column: span 2; }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-group label {
+  font-weight: bold;
+  color: #333333;
+  font-size: 12px;
+}
+
+.form-group label .req {
+  color: var(--gov-red);
+  margin-right: 2px;
+}
+
+.form-control {
+  border: 1px solid #7f9db9; /* Classic Windows input border */
+  padding: 6px 8px;
+  font-size: 13px;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 1px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #1b4b7d;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* Classic Button Styling */
+.btn {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: bold;
+  border: 1px solid #707070;
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-decoration: none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+.btn-default {
+  background: var(--gov-btn-default);
+  color: #222;
+}
+.btn-default:hover {
+  background: #d8e0e8;
+}
+
+.btn-primary {
+  background: var(--gov-btn-primary);
+  border-color: #0f355c;
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: #1b4b7d;
+}
+
+.btn-success {
+  background: var(--gov-btn-success);
+  border-color: #1b5e20;
+  color: #ffffff;
+}
+.btn-success:hover {
+  background: #2e7d32;
+}
+
+.btn-action-small {
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+/* Institutional Tables */
+.portal-table-container {
+  border: 1px solid var(--gov-border);
+  margin-top: 8px;
+  background: #ffffff;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.portal-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: right;
+  font-size: 12px;
+}
+
+.portal-table th {
+  background: var(--gov-table-header);
+  color: #ffffff;
+  padding: 6px 10px;
+  font-weight: bold;
+  border: 1px solid #14355a;
+  position: sticky;
+  top: 0;
+}
+
+.portal-table td {
+  padding: 6px 10px;
+  border: 1px solid #d9e2ec;
+}
+
+.portal-table tr:nth-child(even) {
+  background-color: #f7f9fc;
+}
+
+.portal-table tr:hover {
+  background-color: #eaf1f8;
+}
+
+/* Action Toolbar */
+.toolbar-panel {
+  background: #e4edf5;
+  border: 1px solid var(--gov-border);
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.toolbar-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Validation Feedback & Console Panel */
+.validation-card {
+  border: 1px solid var(--gov-border);
+  background: #ffffff;
+  margin-bottom: 25px;
+}
+
+.validation-header {
+  background: #20476e;
+  color: #ffffff;
+  padding: 8px 14px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.validation-body {
+  padding: 14px 18px;
+}
+
+.status-badge-pass {
+  background: #e8f5e9;
+  border: 1px solid #4caf50;
+  border-right: 4px solid #2e7d32;
+  color: #1b5e20;
+  padding: 10px 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.status-badge-fail {
+  background: #ffebee;
+  border: 1px solid #ef5350;
+  border-right: 4px solid #c62828;
+  color: #b71c1c;
+  padding: 10px 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.code-preview {
+  direction: ltr;
+  text-align: left;
+  background: #fdfdfd;
+  color: #111111;
+  border: 1px solid #7f9db9;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 11px;
+  padding: 10px;
+  height: 200px;
+  overflow: auto;
+  white-space: pre;
+}
+
+/* Modals (Classic Windows / Institutional Dialog) */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-dialog {
+  background: #ece9d8; /* Classic Windows dialog background */
+  border: 2px solid #0055ea;
+  border-radius: 4px 4px 0 0;
+  box-shadow: 3px 3px 12px rgba(0,0,0,0.5);
+  width: 520px;
+  max-width: 95%;
+  overflow: hidden;
+}
+
+.modal-titlebar {
+  background: linear-gradient(180deg, #0058e6 0%, #0849ca 100%);
+  color: #ffffff;
+  padding: 5px 10px;
+  font-weight: bold;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-close-btn {
+  background: #e81123;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  font-size: 11px;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  line-height: 14px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.modal-content {
+  padding: 15px;
+  background: #ffffff;
+  border: 1px solid #7f9db9;
+  margin: 6px;
+}
+
+.modal-footer {
+  padding: 8px 12px;
+  background: #ece9d8;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Explorer Procedure Cards */
+.proc-item-card:hover {
+  background-color: #f0f7ff !important;
+  border-color: #70a0d0 !important;
+}
+.proc-item-card.selected {
+  background-color: #e3effd !important;
+  border-color: #005a9c !important;
+  box-shadow: 0 0 0 1px #005a9c;
+}
+
+/* Bottom Institutional Attribution & License Footer */
+.portal-footer {
+  background: var(--morocco-flag-header-gradient);
+  border-top: 2px solid var(--gov-gold);
+  padding: 16px 24px;
+  color: #ffffff;
+  font-size: 11px;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.25);
+  margin-top: auto;
+}
+
+.footer-citations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  max-width: 1280px;
+  margin: 0 auto 10px auto;
+  width: 100%;
+}
+
+.footer-citation-card {
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 3px;
+  padding: 10px 14px;
+}
+
+.footer-citation-title {
+  font-weight: bold;
+  color: #ffd54f;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.footer-citation-text {
+  color: #f5f5f5;
+  line-height: 1.45;
+}
+
+.footer-citation-link {
+  color: #fff176;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.footer-bottom-copy {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 8px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Two-column Entity Explorer & Inspector Panels */
+.entity-split-view {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  gap: 15px;
+  min-height: 520px;
+}
+
+.entity-list-pane {
+  background: #ffffff;
+  border: 1px solid var(--gov-border);
+  display: flex;
+  flex-direction: column;
+  height: 580px;
+}
+
+.entity-list-scroll {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.entity-inspector-pane {
+  background: #ffffff;
+  border: 1px solid var(--gov-border);
+  padding: 16px;
+  height: 580px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.entity-card-item {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eef2f6;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.entity-card-item:hover {
+  background-color: #f0f7ff;
+}
+
+.entity-card-item.selected {
+  background-color: #e3effd;
+  border-right: 3px solid #005a9c;
+  font-weight: bold;
+}
+
+.req-star {
+  color: #c62828;
+  font-weight: bold;
+  margin-right: 2px;
+}

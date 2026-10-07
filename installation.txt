@@ -1,0 +1,166 @@
+================================================================================
+المملكة المغربية — بوابة ومستودع المساطر الإدارية CPSV-AP 3.2.0
+Kingdom of Morocco — CPSV-AP 3.2.0 Administrative Portal & Dataset
+================================================================================
+دليل التثبيت والتشغيل | INSTALLATION & EXECUTION GUIDE
+================================================================================
+
+هذا الدليل يوضح خطوات تشغيل المشروع مباشرة بعد تحميله أو استنساخه (Clone)
+This guide explains how to run the project immediately after downloading/cloning.
+
+--------------------------------------------------------------------------------
+1. المتطلبات الأساسية | PREREQUISITES
+--------------------------------------------------------------------------------
+يمكن تشغيل المشروع بأي من الطريقتين:
+You can run the project using either of the following methods:
+
+  [الخيار الأول - موصى به | Option 1 - Recommended]:
+  - Docker & Docker Compose (متاح على Linux, macOS, Windows WSL2)
+    Available on Linux, macOS, and Windows.
+
+  [الخيار الثاني | Option 2]:
+  - Python 3.10 أو أحدث (Python 3.10, 3.11, or 3.12)
+  - أداة pip (أو uv)
+
+
+--------------------------------------------------------------------------------
+2. طريقة التشغيل الأولى: عبر DOCKER (الأسهل والأشمل)
+   METHOD 1: USING DOCKER (FASTEST & ZERO-CONFIG)
+--------------------------------------------------------------------------------
+تضمن هذه الطريقة تشغيل الخادم والواجهة ومحرك الفحص دون أي تضارب في بيئة نظامك:
+This method guarantees isolated execution without any host environment conflicts:
+
+خطوة 1: افتح الطرفية (Terminal / Command Prompt) في مجلد المشروع.
+Step 1: Open a terminal inside the project directory.
+
+خطوة 2: نفّذ أحد الأوامر التالية لبناء وتشغيل الحاوية:
+Step 2: Run either of the following commands to build and launch the container:
+
+  أ) في حال توفر Docker Compose (Modern Compose):
+     docker compose up --build
+
+  ب) عبر Docker المباشر (Direct Docker CLI - لا يتطلب Compose):
+     docker build -t morocco-cpsv-portal .
+     docker run -d --rm -p 8085:8085 --name morocco-cpsv-webui morocco-cpsv-portal
+
+  ج) أو ببساطة عبر سكريبت التشغيل الموحد:
+     ./run.sh --docker
+
+خطوة 3: افتح المتصفح مباشرة على الرابط التالي:
+Step 3: Open your web browser at:
+
+    http://localhost:8085
+
+* لإيقاف حاوية Docker عند الانتهاء:
+* To stop the container when done:
+    docker stop morocco-cpsv-webui    (أو docker compose down)
+
+
+--------------------------------------------------------------------------------
+3. طريقة التشغيل الثانية: عبر بايثون المباشر (NATIVE PYTHON)
+   METHOD 2: DIRECT PYTHON EXECUTION
+--------------------------------------------------------------------------------
+إذا كنت تفضل التشغيل بدون Docker:
+If you prefer running directly with Python:
+
+خطوة 1: تثبيت الحزم المطلوبة (وهي حزم بايثون صرفة لا تحتاج إلى أدوات بناء):
+Step 1: Install the pure-Python dependencies:
+
+    pip install -r requirements.txt
+
+خطوة 2: تشغيل الخادم المحلي عبر سكريبت التشغيل الموحد:
+Step 2: Run the unified startup script:
+
+    ./run.sh
+
+أو تشغيله مباشرة عبر بايثون بتحديد المنفذ (افتراضياً 8085):
+Or launch directly using python specifying the port (default: 8085):
+
+    python3 src/morocco_cpsv_composer/server.py 8085
+
+خطوة 3: افتح المتصفح على:
+Step 3: Open your web browser at:
+
+    http://localhost:8085
+
+
+--------------------------------------------------------------------------------
+4. تدقيق البيانات المعياري عبر سطر الأوامر | CLI SHACL VALIDATION
+--------------------------------------------------------------------------------
+المشروع يتضمن محرك فحص مستقل للتحقق من مطابقة البيانات لقواعد المفوضية الأوروبية:
+The project includes a standalone CLI validator to check official SEMIC SHACL compliance:
+
+* لتدقيق المستودع الدلالي بصيغة Turtle:
+* Validate the Turtle master dataset:
+    python3 src/morocco_cpsv_validator/validate_dataset.py output/procedures_administratives_cpsv.ttl
+
+* لتدقيق المستودع الدلالي بصيغة RDF/XML:
+* Validate the RDF/XML master dataset:
+    python3 src/morocco_cpsv_validator/validate_dataset.py output/procedures_administratives_cpsv.rdf
+
+النتيجة المعتمدة الرسمية:
+Expected Conformance Result:
+    CONFORMANCE STATUS: PASS (Conforms)
+    Total Constraint Violations: 0 (مطابقة تامة 100%)
+
+
+--------------------------------------------------------------------------------
+5. بنية محتويات المستودع | REPOSITORY STRUCTURE OVERVIEW
+--------------------------------------------------------------------------------
+  output/
+    ├── procedures_administratives_cpsv.ttl        # المستودع الوطني الدلالي (102,018 ثلاثية Turtle)
+    └── procedures_administratives_cpsv.rdf        # المستودع الوطني الدلالي (صيغة RDF/XML)
+
+  src/
+    ├── procedures_administratives_cpsv.db         # قاعدة البيانات التشغيلية المفهرسة (SQLite WAL)
+    ├── sync_dataset_distributions.py # سكريبت مزامنة التوزيعات الدلالية
+    │
+    ├── sql/
+    │   └── 03_rdf_views.sql            # استعلامات توليد ثلاثيات RDF
+    │
+    ├── morocco_cpsv_composer/  # تطبيق الويب والواجهات البرمجية REST API
+    │   ├── server.py           # خادم HTTP المحلي
+    │   ├── procedure_manager.py# محرك البحث والتعديل في قاعدة البيانات
+    │   ├── builder.py          # محول البيانات إلى ثلاثيات RDF/Turtle
+    │   ├── id_policy.py        # محرك المعرفات المبسطة (PS00001, CA00001, OTPT000001...)
+    │   ├── registry.py         # سجل الإدارات والمخرجات والمصطلحات المضبوطة
+    │   ├── registry/
+    │   │   └── canonical_ids_registry.json # مصدر الحقيقة المعتمد
+    │   └── web/                # واجهة المستخدم الرسمية (HTML, CSS, JS, SVGs)
+    │
+    └── morocco_cpsv_validator/ # محرك تدقيق SHACL الرسمي
+        ├── validator.py        # محرك الفحص الآني
+        ├── official_cpsv_ap_3.2.0_shapes.ttl # قواعد تدقيق SEMIC الرسمية
+        └── validate_dataset.py # أداة سطر الأوامر
+
+  Dockerfile                    # ملف بناء صورة Docker المعتمدة
+  docker-compose.yml            # إعدادات تشغيل الخدمة بالحاوية
+  requirements.txt              # الحزم البرمجية المعتمدة
+  run.sh                        # سكريبت الإقلاع السريع
+  README.md                     # التوثيق الفني والتقني الشامل
+  installation.txt              # هذا الملف التوجيهي
+
+
+--------------------------------------------------------------------------------
+6. ملاحظات هامة وحلول للمشاكل الشائعة | TROUBLESHOOTING & NOTES
+--------------------------------------------------------------------------------
+1. هل يحتاج المشروع إلى اتصال بالإنترنت عند التشغيل؟
+   Is internet connection required at runtime?
+   - لا، التطبيق يعمل بنسبة 100% بدون إنترنت (Offline Local).
+   - No, the portal and validator run 100% offline.
+
+2. في حال كان المنفذ 8085 مشغولاً (Port 8085 already in use):
+   - يمكنك تحديد منفذ بديل بسهولة (مثال: 8090):
+     python3 src/morocco_cpsv_composer/server.py 8090
+   - أو في Docker عبر تعديل ports في docker-compose.yml:
+     ports:
+       - "8090:8085"
+
+3. الحفاظ على البيانات عند الحفظ والتعديل (Persistence):
+   - أي مسطرة يتم تسجيلها أو تعديلها من خلال الواجهة يتم حفظها مباشرة في:
+     1) قاعدة البيانات `src/procedures_administratives_cpsv.db`
+     2) مستودع البيانات الدلالي `output/procedures_administratives_cpsv.ttl`
+
+================================================================================
+المملكة المغربية — بوابة وتدقيق المساطر الإدارية CPSV-AP 3.2.0
+================================================================================

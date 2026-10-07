@@ -1,0 +1,9 @@
+# =============================================================================
+# Morocco CPSV-AP 3.2.0 Portal & Validation Engine Dependencies
+# Pure Python dependencies compatible with Linux, macOS, and Windows
+# =============================================================================
+
+rdflib>=7.0.0
+pyshacl>=0.26.0
+requests>=2.31.0
+rapidfuzz>=3.0.0

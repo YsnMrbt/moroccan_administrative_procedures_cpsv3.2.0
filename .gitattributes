@@ -1,0 +1,23 @@
+# Enforce LF endings on all text files across Linux, macOS, and Windows
+* text=auto eol=lf
+
+# Explicit syntax types
+*.py text eol=lf
+*.sh text eol=lf
+*.ttl text eol=lf
+*.rdf text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.svg text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+Dockerfile text eol=lf
+
+# Binary files
+*.db binary
+*.png binary
+*.jpg binary
+*.ico binary

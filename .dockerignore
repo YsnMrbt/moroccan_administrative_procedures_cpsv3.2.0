@@ -1,0 +1,56 @@
+# Git and version control
+.git
+.gitignore
+.gitattributes
+
+# Python build and cache
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache
+.mypy_cache
+.venv
+venv
+env
+
+# Legacy / Non-shipment Research Directories
+chtbt_bnchmrk/
+Knowledge_Base_JSON/
+RAG/
+trsh_cn/
+verification/
+curation/
+
+# Non-shipment Source Subdirectories
+src/core/
+src/modules/
+src/api/
+src/sql/
+src/utils/
+src/curation/
+src/validation/
+
+# Raw Documents, Scraped Data, and Archives
+*.pdf
+*.docx
+*.xlsx
+*.csv
+*.dump
+src/scraped_data_*
+src/scrapped_data_*
+src/procedures_agadir.*
+src/ec_agadir.json
+src/CPSV_integration_REORGANIZED.json
+src/canonical_dictionary.json
+src/cnie_passport_cpsv.*
+src/CPSV_AP_06052024.html
+src/export_rdf.py
+src/validate_cpsv.py
+src/test_composer_and_validator.py
+
+# Local logs and database journals
+*.log
+*.db-journal
+*.db-wal
+*.db-shm
